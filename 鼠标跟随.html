@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #canvas {
+            background: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        let canvas = document.getElementById('canvas');
+        let context = canvas.getContext('2d');
+
+        const CLIENT_WIDTH = document.documentElement.clientWidth;
+        const CLIENT_HEIGHT = document.documentElement.clientHeight;
+
+        canvas.width = CLIENT_WIDTH;
+        canvas.height = CLIENT_HEIGHT;
+
+        let para = {
+            num: 100,
+            color: false, // 颜色。false: 随机渐变
+            r: 0.9,  // 圆每次增加的半径
+            o: 0.09, // 判断圆消失的条件, 数值越大, 消失的越快
+            a: 1
+        },
+            color,
+            color2,
+            round_arr = []; // 存放圆形的数组
+
+        // 鼠标移动事件
+        window.onmousemove = function (event) {
+            let mouseX = event.clientX;
+            let mouseY = event.clientY;
+
+            round_arr.push({
+                mouseX: mouseX,
+                mouseY: mouseY,
+                r: para.r,
+                o: 1
+            })
+        }
+        // 判断参数中是否设置了 color，如果设置了 color，就使用该值、
+        // 如果参数中的 color 为 false，那么就使用随机的颜色
+        if (para.color) {
+            color2 = para.color;
+        } else {
+            color = Math.random() * 360;
+        }
+        function animate() {
+            if (!para.color) {
+                color += .1;
+                color2 = 'hsl(' + color + ',100%,80%)';
+            }
+            context.clearRect(0, 0, CLIENT_WIDTH, CLIENT_HEIGHT);
+
+            for (let i = 0; i < round_arr.length; i++) {
+
+                context.fillStyle = color2;
+                context.beginPath();
+                context.arc(round_arr[i].mouseX, round_arr[i].mouseY, round_arr[i].r, 0, Math.PI * 2);
+                context.closePath();
+                context.fill();
+                round_arr[i].r += para.r;
+                round_arr[i].o -= para.o;
+                if (round_arr[i].o <= 0) {
+                    round_arr.splice(i, 1);
+                    i--;
+                }
+            }
+            window.requestAnimationFrame(animate);
+        }
+        animate();
+
+    </script>
+</body>
+
+</html>

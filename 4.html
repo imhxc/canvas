@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #canvas {
+            background: #ffc900;
+        }
+    </style>
+</head>
+
+<body>
+    <h5>JS设置宽高</h5>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        let canvas = document.getElementById('canvas');
+        //  设置宽高
+        canvas.width = 100;
+        canvas.height = 100;
+
+        let context = canvas.getContext('2d');
+
+        context.beginPath();
+        context.arc(30, 30, 20, 0, Math.PI * 2, true);
+        context.closePath();
+        context.fillStyle = 'rgb(0,0,0)';
+        context.fill();
+    </script>
+</body>
+
+</html>
